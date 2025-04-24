@@ -18,6 +18,4 @@ class CarimManagerCompass extends Managed {
     }
 }
 
-typedef CarimSingleton<CarimManagerCompass> CarimManagerCompassSingleton;
-
 #endif

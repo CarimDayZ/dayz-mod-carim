@@ -1,7 +1,7 @@
 #ifndef CARIM_CarimModelPartyPlayer
 #define CARIM_CarimModelPartyPlayer
 
-class CarimModelPartyPlayer extends CarimModelBase {
+class CarimModelPartyPlayer extends CarimModelAbcBase {
     string id;
     vector position;
     int healthLevel;

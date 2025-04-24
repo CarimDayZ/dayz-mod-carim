@@ -4,7 +4,7 @@
 class CarimManagerChat extends Managed {
     bool isChannelGlobal = true;
 
-    void OnUpdate() {
+    void OnUpdate(CarimModelChatSettings settings) {
         PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
         if (player && GetUApi() && !GetGame().GetUIManager().IsMenuOpen(MENU_CHAT_INPUT)) {
             if (CarimUtil.CheckInput("UACarimChatChannel")) {
@@ -12,13 +12,13 @@ class CarimManagerChat extends Managed {
                 GetGame().Chat("Channel switched to " + getChannelName(), "colorAction");
             }
             if (CarimUtil.CheckInput("UACarimChatSizeDown")) {
-                CarimModelChatSettingsDAL.Get().size = Math.Max(12, CarimModelChatSettingsDAL.Get().size - 1);
-                CarimModelChatSettingsDAL.Save();
+                settings.size = Math.Max(12, settings.size - 1);
+                settings.Persist();
                 MissionGameplay.Cast(GetGame().GetMission()).m_Chat.CarimUpdateSize();
             }
             if (CarimUtil.CheckInput("UACarimChatSizeUp")) {
-                CarimModelChatSettingsDAL.Get().size = Math.Min(30, CarimModelChatSettingsDAL.Get().size + 1);
-                CarimModelChatSettingsDAL.Save();
+                settings.size = Math.Min(30, settings.size + 1);
+                settings.Persist();
                 MissionGameplay.Cast(GetGame().GetMission()).m_Chat.CarimUpdateSize();
             }
         }
@@ -32,7 +32,5 @@ class CarimManagerChat extends Managed {
         }
     }
 }
-
-typedef CarimSingleton<CarimManagerChat> CarimManagerChatSingleton;
 
 #endif

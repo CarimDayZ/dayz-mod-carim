@@ -19,7 +19,7 @@ class CarimEnabled {
             Initialize();
         }
         if (!autorun) {
-            CarimLogging.Trace("Autorun not enabled");
+            CarimLogging.Info(NULL, "Autorun not enabled");
         }
         return autorun;
     }
@@ -29,7 +29,7 @@ class CarimEnabled {
             Initialize();
         }
         if (!chat) {
-            CarimLogging.Trace("Chat not enabled");
+            CarimLogging.Info(NULL, "Chat not enabled");
         }
         return chat;
     }
@@ -39,7 +39,7 @@ class CarimEnabled {
             Initialize();
         }
         if (!compass) {
-            CarimLogging.Trace("Compass not enabled");
+            CarimLogging.Info(NULL, "Compass not enabled");
         }
         return compass;
     }
@@ -49,7 +49,7 @@ class CarimEnabled {
             Initialize();
         }
         if (!party) {
-            CarimLogging.Trace("Party not enabled");
+            CarimLogging.Info(NULL, "Party not enabled");
         }
         return party;
     }

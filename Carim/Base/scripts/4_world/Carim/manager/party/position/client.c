@@ -2,10 +2,12 @@
 #define CARIM_CarimManagerPartyPositionClient
 
 class CarimManagerPartyPositionClient extends Managed {
+    CarimModelPartyRegistrations registrations;
     ref map<string, ref CarimModelPartyPlayer> serverPositions = new map<string, ref CarimModelPartyPlayer>;
     ref map<string, ref CarimMenuPartyNametag> menus = new map<string, ref CarimMenuPartyNametag>;
 
-    void CarimManagerPartyPositionClient() {
+    void CarimManagerPartyPositionClient(CarimModelPartyRegistrations inputRegistrations) {
+        registrations = inputRegistrations;
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.SyncMenus, 2000, true);
     }
 
@@ -33,8 +35,8 @@ class CarimManagerPartyPositionClient extends Managed {
     void AddAndUpdateNametags() {
         foreach(string id, CarimModelPartyPlayer position : serverPositions) {
             string name = id.Substring(0, 4);
-            if (CarimModelPartyRegistrationsDAL.Get().registrations.Contains(id)) {
-                name = CarimModelPartyRegistrationsDAL.Get().registrations.Get(id);
+            if (registrations.registrations.Contains(id)) {
+                name = registrations.registrations.Get(id);
             }
             if (!menus.Contains(id)) {
                 menus.Insert(id, new CarimMenuPartyNametag(name, position.position));
@@ -61,7 +63,7 @@ class CarimManagerPartyPositionClient extends Managed {
         if (activePlayer && activePlayer.GetIdentity()) {
             activePlayerId = activePlayer.GetIdentity().GetId();
         }
-        foreach(PlayerBase player : CarimUtil.GetClientPlayerBases()) {
+        foreach(PlayerBase player : GetClientPlayerBases()) {
             if (player && player.GetIdentity() && player.IsAlive()) {
                 string id = player.GetIdentity().GetId();
                 if (menus.Contains(id) && serverPositions.Contains(id)) {
@@ -75,7 +77,7 @@ class CarimManagerPartyPositionClient extends Managed {
         // menu ids should always be in registrations
         // if there's duplicate indicies (i.e. overlapping list items), then
         // that assumption is false for some reason and needs fixed here
-        auto sortedIds = CarimUtil.GetSortedIdsByLowerName(CarimModelPartyRegistrationsDAL.Get().registrations);
+        auto sortedIds = CarimUtil.GetSortedIdsByLowerName(registrations.registrations);
         int index = 0;
         foreach(auto id : sortedIds) {
             if (menus.Contains(id)) {
@@ -84,8 +86,14 @@ class CarimManagerPartyPositionClient extends Managed {
             }
         }
     }
-}
 
-typedef CarimSingleton<CarimManagerPartyPositionClient> CarimManagerPartyPositionClientSingleton;
+    static array<PlayerBase> GetClientPlayerBases() {
+        array<PlayerBase> players = new array<PlayerBase>;
+        foreach(Man m : ClientData.m_PlayerBaseList) {
+            players.Insert(PlayerBase.Cast(m));
+        }
+        return players;
+    }
+}
 
 #endif

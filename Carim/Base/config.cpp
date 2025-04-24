@@ -10,9 +10,15 @@ class CfgMods {
         action = "https://github.com/CarimDayZ/dayz-mod-carim";
         author = "cnofafva";
         type = "mod";
-        dependencies[] = {"World", "Mission"};
+        dependencies[] = {"Game", "World", "Mission"};
 
         class defs {
+            class gameScriptModule {
+                files[] = {
+                    "Carim/Base/scripts/3_game",
+                };
+            };
+
             class worldScriptModule {
                 files[] = {
                     "Carim/Base/scripts/4_world",

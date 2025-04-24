@@ -1,7 +1,7 @@
 #ifndef CARIM_CarimModelChatSettings
 #define CARIM_CarimModelChatSettings
 
-class CarimModelChatSettings extends CarimModelBase {
+class CarimModelChatSettings extends CarimModelAbcDiskJson {
     static const int DEFAULT_SIZE = 20;
     static const int DEFAULT_COLOR_DIRECT = 0xfffafafa; /* grey 50 */
     static const int DEFAULT_COLOR_GLOBAL = 0xffffd54f; /* amber 300 */
@@ -14,7 +14,8 @@ class CarimModelChatSettings extends CarimModelBase {
     int color_server = DEFAULT_COLOR_SERVER;
     int color_alert = DEFAULT_COLOR_ALERT;
 
-    override void LoadDefaultsIfMissing() {
+    override void Load() {
+        super.Load();
         if (size == 0) {
             size = DEFAULT_SIZE;
         }
@@ -30,9 +31,8 @@ class CarimModelChatSettings extends CarimModelBase {
         if (color_alert == 0) {
             color_alert = DEFAULT_COLOR_ALERT;
         }
+        Persist();
     }
 }
-
-typedef CarimDAL<CarimModelChatSettings> CarimModelChatSettingsDAL;
 
 #endif

@@ -4,14 +4,18 @@
 class CarimManagerPartyMarkerServer extends Managed {
     ref map<string, ref CarimModelPartyMarkers> markers = new map<string, ref CarimModelPartyMarkers>;
     ref CarimRPCPartyMarkers rpc = new CarimRPCPartyMarkers;
+    CarimModelPartyParties parties;
+
+    void CarimManagerPartyMarkerServer(CarimModelPartyParties inputParties) {
+        parties = inputParties;
+    }
 
     void Register(string id, CarimModelPartyMarkers playerMarkers) {
         markers.Set(id, playerMarkers);
 
         // Send markers to mutual members
-        auto parties = CarimManagerPartyRegistrationServerSingleton.Get().parties;
         if (parties.mutuals.Contains(id)) {
-            auto idMap = CarimUtil.GetServerIdPlayerMap();
+            auto idMap = CarimManagerPartyUtil.GetServerIdPlayerMap();
             foreach(string playerId : parties.mutuals.Get(id).ToArray()) {
                 if (idMap.Contains(playerId)) {
                     PlayerBase player = idMap.Get(playerId);
@@ -24,7 +28,5 @@ class CarimManagerPartyMarkerServer extends Managed {
         }
     }
 }
-
-typedef CarimSingleton<CarimManagerPartyMarkerServer> CarimManagerPartyMarkerServerSingleton;
 
 #endif

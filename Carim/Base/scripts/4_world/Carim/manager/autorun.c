@@ -95,6 +95,4 @@ class CarimManagerAutorun extends Managed {
     }
 }
 
-typedef CarimSingleton<CarimManagerAutorun> CarimManagerAutorunSingleton;
-
 #endif

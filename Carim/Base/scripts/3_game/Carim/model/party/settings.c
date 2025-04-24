@@ -1,7 +1,7 @@
 #ifndef CARIM_CarimModelPartySettings
 #define CARIM_CarimModelPartySettings
 
-class CarimModelPartySettings extends CarimModelBase {
+class CarimModelPartySettings extends CarimModelAbcDiskJson {
     static const int DEFAULT_LOG_FREQUENCY = -1;
     static const int DEFAULT_MAX_PARTY_SIZE = -1;
     static const int DEFAULT_SEND_INFO_FREQUENCY = 5000;
@@ -14,7 +14,8 @@ class CarimModelPartySettings extends CarimModelBase {
     int sendMarkerFrequency = DEFAULT_SEND_MARKER_FREQUENCY;
     int maxPartyRefreshRate = DEFAULT_MAX_PARTY_REFRESH_RATE;
 
-    override void LoadDefaultsIfMissing() {
+    override void Load() {
+        super.Load();
         if (logPartiesFrequency == 0) {
             logPartiesFrequency = DEFAULT_LOG_FREQUENCY;
         }
@@ -30,9 +31,8 @@ class CarimModelPartySettings extends CarimModelBase {
         if (maxPartyRefreshRate == 0) {
             maxPartyRefreshRate = DEFAULT_MAX_PARTY_REFRESH_RATE;
         }
+        Persist();
     }
 }
-
-typedef CarimDAL<CarimModelPartySettings> CarimModelPartySettingsDAL;
 
 #endif

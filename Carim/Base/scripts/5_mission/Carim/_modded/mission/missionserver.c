@@ -6,19 +6,19 @@ modded class MissionServer {
     CarimManagerPartyPositionServer carimManagerPartyPositionServer;
     CarimManagerPartyRegistrationServer carimManagerPartyRegistrationServer;
 
-    CarimModelSettings carimModelSettings;
-    CarimModelServerSettings carimModelServerSettings;
+    ref CarimModelServerSettings carimModelServerSettings = new CarimModelServerSettings;
+
+    ref CarimModelPartyParties carimModelPartyParties = new CarimModelPartyParties;
 
     override void OnInit() {
         super.OnInit();
 
-        carimModelSettings = CarimModelSettingsDAL.Get();
-        carimModelServerSettings = CarimModelServerSettingsDAL.Get();
+        carimModelServerSettings.Load();
 
         if (CarimEnabled.Party()) {
-            carimManagerPartyMarkerServer = CarimManagerPartyMarkerServerSingleton.Get();
-            carimManagerPartyPositionServer = CarimManagerPartyPositionServerSingleton.Get();
-            carimManagerPartyRegistrationServer = CarimManagerPartyRegistrationServerSingleton.Get();
+            carimManagerPartyMarkerServer = new CarimManagerPartyMarkerServer;
+            carimManagerPartyPositionServer = new CarimManagerPartyPositionServer;
+            carimManagerPartyRegistrationServer = new CarimManagerPartyRegistrationServer;
         }
     }
 }

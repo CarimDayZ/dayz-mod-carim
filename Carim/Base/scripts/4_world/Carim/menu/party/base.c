@@ -1,0 +1,58 @@
+#ifndef CARIM_CarimMenuPartyBase
+#define CARIM_CarimMenuPartyBase
+
+class CarimMenuPartyBase extends UIScriptedMenu {
+    bool carimInitialized;
+
+    string carimName;
+    vector carimPosition;
+    PlayerBase carimPlayer;
+
+    TextWidget carimNametag;
+    TextWidget carimDistance;
+    ImageWidget carimIcon;
+
+    void CarimMenuPartyBase(string name, vector position, PlayerBase player = null) {
+        carimName = name;
+        carimPosition = position;
+        carimPlayer = player;
+
+        GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.CarimUpdate, CARIM_60_FPS_INTERVAL_MS, true);
+    }
+
+    void ~CarimMenuPartyBase() {
+        GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.CarimUpdate);
+    }
+
+    override Widget Init() {
+        if (layoutRoot) {
+            carimNametag = TextWidget.Cast(layoutRoot.FindAnyWidget("nametag"));
+            carimDistance = TextWidget.Cast(layoutRoot.FindAnyWidget("distance"));
+            carimIcon = ImageWidget.Cast(layoutRoot.FindAnyWidget("icon"));
+        } else {
+            CarimLogging.Warn(this, "layoutRoot not set");
+        }
+
+        return layoutRoot;
+    }
+
+    string CarimGetName() {
+        return carimName;
+    }
+
+    vector CarimGetPosition() {
+        return carimPosition;
+    }
+
+    void CarimUpdate() {
+        float distance = Math.Round(vector.Distance(CarimGetPosition(), GetGame().GetPlayer().GetPosition()));
+        string distanceString = distance.ToString() + "m";
+        if (distance > 1000) {
+            distanceString = (Math.Round(distance / 100) / 10).ToString() + "km";
+        }
+        carimNametag.SetText(CarimGetName());
+        carimDistance.SetText(distanceString);
+    }
+}
+
+#endif

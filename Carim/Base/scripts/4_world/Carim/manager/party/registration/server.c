@@ -2,10 +2,11 @@
 #define CARIM_CarimManagerPartyRegistrationServer
 
 class CarimManagerPartyRegistrationServer extends Managed {
-    ref CarimModelPartyParties parties = new CarimModelPartyParties;
+    CarimModelPartyParties parties;
     ref CarimRPCPartyRegister rpc = new CarimRPCPartyRegister;
 
-    void CarimManagerPartyRegistrationServer() {
+    void CarimManagerPartyRegistrationServer(CarimModelPartyParties inputParties) {
+        parties = inputParties;
         GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(this.Send, 10000, true);
     }
 
@@ -15,20 +16,20 @@ class CarimManagerPartyRegistrationServer extends Managed {
 
     void Register(string id, array<string> players) {
         string jsonPlayers;
-        if (CarimLogging.WillLog(CarimLogging.TRACE)) {
+        if (CarimLogging.TraceEnabled()) {
             JsonSerializer().WriteToString(players, false, jsonPlayers);
         }
-        CarimLogging.Trace("Register " + id + ", " + jsonPlayers);
-        CarimLogging.Trace("Before: " + parties.Repr());
+        CarimLogging.Trace(this, "Register " + id + ", " + jsonPlayers);
+        CarimLogging.Trace(this, "Before: " + parties.Repr());
         bool changed = parties.Register(id, players);
-        CarimLogging.Trace("After: " + parties.Repr());
+        CarimLogging.Trace(this, "After: " + parties.Repr());
         if (changed) {
             Send();
         }
     }
 
     void Send() {
-        map<string, PlayerBase> idMap = CarimUtil.GetServerIdPlayerMap();
+        map<string, PlayerBase> idMap = CarimManagerPartyUtil.GetServerIdPlayerMap();
         foreach(string id, PlayerBase player : idMap) {
             array<string> mutuals = new array<string>;
             if (parties.mutuals.Contains(id)) {
@@ -41,7 +42,5 @@ class CarimManagerPartyRegistrationServer extends Managed {
         }
     }
 }
-
-typedef CarimSingleton<CarimManagerPartyRegistrationServer> CarimManagerPartyRegistrationServerSingleton;
 
 #endif

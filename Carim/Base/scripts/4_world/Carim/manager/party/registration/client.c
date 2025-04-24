@@ -2,11 +2,13 @@
 #define CARIM_CarimManagerPartyRegistrationClient
 
 class CarimManagerPartyRegistrationClient extends Managed {
+    CarimModelPartyRegistrations registrations;
     ref CarimMenuPartyRegister menu;
     ref array<string> mutual = new array<string>;
     ref CarimRPCPartyRegister rpc = new CarimRPCPartyRegister;
 
-    void CarimManagerPartyRegistrationClient() {
+    void CarimManagerPartyRegistrationClient(CarimModelPartyRegistrations inputRegistrations) {
+        registrations = inputRegistrations;
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.InitialRegistration, 2000, true);
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.RenewRegistration, 60000, true);
     }
@@ -51,26 +53,24 @@ class CarimManagerPartyRegistrationClient extends Managed {
     void RenewRegistration() {
         PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
         if (player && player.GetIdentity()) {
-            array<string> registrations = CarimModelPartyRegistrationsDAL.Get().registrations.GetKeyArray();
-            auto params = new Param1<array<string>>(registrations);
+            array<string> keys = registrations.registrations.GetKeyArray();
+            auto params = new Param1<array<string>>(keys);
             rpc.Send(player, params);
         }
     }
 
     void AddPlayerToParty(string id) {
-        CarimModelPartyRegistrationsDAL.Get().Add(id, CarimUtil.GetClientPlayerIdentities().Get(id));
-        CarimModelPartyRegistrationsDAL.Save();
+        registrations.Add(id, CarimUtil.GetClientPlayerIdentities().Get(id));
+        registrations.Persist();
         RenewRegistration();
     }
 
     void RemovePlayerFromParty(string id) {
-        CarimModelPartyRegistrationsDAL.Get().Remove(id);
-        CarimModelPartyRegistrationsDAL.Save();
+        registrations.Remove(id);
+        registrations.Persist();
         mutual.RemoveItem(id);
         RenewRegistration();
     }
 }
-
-typedef CarimSingleton<CarimManagerPartyRegistrationClient> CarimManagerPartyRegistrationClientSingleton;
 
 #endif

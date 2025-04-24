@@ -1,7 +1,7 @@
 #ifndef CARIM_CarimModelPartyMarkers
 #define CARIM_CarimModelPartyMarkers
 
-class CarimModelPartyMarkers extends CarimModelBase {
+class CarimModelPartyMarkers extends CarimModelAbcDiskJson {
     ref array<vector> markers = new array<vector>;
 
     void Add(vector mark) {
@@ -10,13 +10,13 @@ class CarimModelPartyMarkers extends CarimModelBase {
         if (markers.Count() > 3) {
             markers.RemoveOrdered(0);
         }
+        Persist();
     }
 
     void Clear() {
         markers.Clear();
+        Persist();
     }
 }
-
-typedef CarimDAL<CarimModelPartyMarkers> CarimModelPartyMarkersDAL;
 
 #endif

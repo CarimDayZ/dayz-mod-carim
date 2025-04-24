@@ -1,9 +1,15 @@
 #ifndef CARIM_CarimModelPartyParties
 #define CARIM_CarimModelPartyParties
 
-class CarimModelPartyParties extends Managed {
+class CarimModelPartyParties extends CarimModelAbcBase {
     ref map<string, ref CarimSet> registered = new map<string, ref CarimSet>;
     ref map<string, ref CarimSet> mutuals = new map<string, ref CarimSet>;
+
+    array<string> admins;
+
+    void CarimModelPartyParties(array<string> adminIds) {
+        admins = adminIds;
+    }
 
     bool Register(string id, array<string> players) {
         if (!registered.Contains(id)) {
@@ -16,13 +22,14 @@ class CarimModelPartyParties extends Managed {
         foreach(string newPlayer : players) {
             removed.Remove(newPlayer);
             if (!registered.Get(id).Contains(newPlayer)) {
-                CarimLogging.Trace("Register " + id + " added " + newPlayer);
+                CarimLogging.Info(this, "Register " + id + " added " + newPlayer);
                 added = true;
                 registered.Get(id).Insert(newPlayer);
             }
         }
 
         foreach(string removedPlayer : removed.ToArray()) {
+            CarimLogging.Info(this, "Register " + id + " removed " + removedPlayer);
             registered.Get(id).Remove(removedPlayer);
             UpdateMutual(removedPlayer);
         }
@@ -39,9 +46,9 @@ class CarimModelPartyParties extends Managed {
     }
 
     void UpdateMutual(string id) {
-        CarimLogging.Trace("UpdateMutual " + id);
+        CarimLogging.Trace(this, "UpdateMutual " + id);
         if (!registered.Contains(id)) {
-            CarimLogging.Trace("No registration found");
+            CarimLogging.Trace(this, "No registration found");
             return;
         }
         if (!mutuals.Contains(id)) {
@@ -49,14 +56,13 @@ class CarimModelPartyParties extends Managed {
         } else {
             mutuals.Get(id).Clear();
         }
-        auto admins = CarimModelServerSettingsDAL.Get().adminIds;
         foreach(string player : registered.Get(id).ToArray()) {
-            CarimLogging.Trace("Checking if mutual: " + player);
+            CarimLogging.Trace(this, "Checking if mutual: " + player);
             if (registered.Contains(player) && registered.Get(player).Contains(id)) {
-                CarimLogging.Trace("Mutual found: " + player);
+                CarimLogging.Trace(this, "Mutual found: " + player);
                 mutuals.Get(id).Insert(player);
             } else if (admins.Find(id) != -1) {
-                CarimLogging.Trace("Mutual admin override: " + player);
+                CarimLogging.Info(this, "Mutual admin override: " + player);
                 mutuals.Get(id).Insert(player);
             }
         }
@@ -64,11 +70,11 @@ class CarimModelPartyParties extends Managed {
 
     string Repr() {
         string jsonRegistered;
-        if (CarimLogging.WillLog(CarimLogging.TRACE)) {
+        if (CarimLogging.TraceEnabled()) {
             JsonSerializer().WriteToString(registered, false, jsonRegistered);
         }
         string jsonMutuals;
-        if (CarimLogging.WillLog(CarimLogging.TRACE)) {
+        if (CarimLogging.TraceEnabled()) {
             JsonSerializer().WriteToString(mutuals, false, jsonMutuals);
         }
         return "PartyParties<" + jsonRegistered + ", " + jsonMutuals + ">";
