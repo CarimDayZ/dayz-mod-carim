@@ -26,6 +26,28 @@ FrameWidgetClass rootFrame {
    "size to text h" 1
    "size to text v" 0
    "text valign" center
+   {
+    TextWidgetClass distance {
+     clipchildren 0
+     ignorepointer 1
+     position 1 0
+     size 0 0
+     halign center_ref
+     hexactpos 0
+     vexactpos 0
+     hexactsize 1
+     vexactsize 1
+     scaled 1
+     text ""
+     font "gui/fonts/sdf_MetronLight72"
+     "shadow size" 5
+     "text sharpness" 1.5
+     "exact text" 1
+     "exact text size" 20
+     "size to text h" 1
+     "size to text v" 1
+     "text valign" center
+    }
   }
   FrameWidgetClass FrameHealth {
    ignorepointer 1

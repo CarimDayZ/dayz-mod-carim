@@ -4,7 +4,8 @@
 class CarimManagerPartyPositionClient extends Managed {
     CarimModelPartyRegistrations registrations;
     ref map<string, ref CarimModelPartyPlayer> serverPositions = new map<string, ref CarimModelPartyPlayer>;
-    ref map<string, ref CarimMenuPartyNametag> menus = new map<string, ref CarimMenuPartyNametag>;
+    ref map<string, ref CarimMenuPartyNametag> nametagMenus = new map<string, ref CarimMenuPartyNametag>;
+    ref map<string, ref CarimMenuPartyList> listMenus = new map<string, ref CarimMenuPartyList>;
 
     void CarimManagerPartyPositionClient(CarimModelPartyRegistrations inputRegistrations) {
         registrations = inputRegistrations;
@@ -32,27 +33,30 @@ class CarimManagerPartyPositionClient extends Managed {
         }
     }
 
+    void AddAndUpdateMenus() {
+    }
+
     void AddAndUpdateNametags() {
         foreach(string id, CarimModelPartyPlayer position : serverPositions) {
             string name = id.Substring(0, 4);
             if (registrations.registrations.Contains(id)) {
                 name = registrations.registrations.Get(id);
             }
-            if (!menus.Contains(id)) {
-                menus.Insert(id, new CarimMenuPartyNametag(name, position.position));
+            if (!nametagMenus.Contains(id)) {
+                nametagMenus.Insert(id, new CarimMenuPartyNametag(name, position.position));
             }
-            menus.Get(id).carimName = name;
-            menus.Get(id).carimPosition = position.position;
-            menus.Get(id).carimHealthLevel = position.healthLevel;
+            nametagMenus.Get(id).carimName = name;
+            nametagMenus.Get(id).carimPosition = position.position;
+            nametagMenus.Get(id).carimHealthLevel = position.healthLevel;
         }
     }
 
     void RemoveInvalidNametags() {
-        auto ids = menus.GetKeyArray();
+        auto ids = nametagMenus.GetKeyArray();
         foreach(string id : ids) {
-            if (!serverPositions.Contains(id) && menus.Contains(id)) {
-                menus.Get(id).CarimRemove();
-                menus.Remove(id);
+            if (!serverPositions.Contains(id) && nametagMenus.Contains(id)) {
+                nametagMenus.Get(id).Close();
+                nametagMenus.Remove(id);
             }
         }
     }
@@ -66,8 +70,8 @@ class CarimManagerPartyPositionClient extends Managed {
         foreach(PlayerBase player : GetClientPlayerBases()) {
             if (player && player.GetIdentity() && player.IsAlive()) {
                 string id = player.GetIdentity().GetId();
-                if (menus.Contains(id) && serverPositions.Contains(id)) {
-                    menus.Get(id).carimPlayer = player;
+                if (nametagMenus.Contains(id) && serverPositions.Contains(id)) {
+                    nametagMenus.Get(id).carimPlayer = player;
                 }
             }
         }
@@ -80,8 +84,8 @@ class CarimManagerPartyPositionClient extends Managed {
         auto sortedIds = CarimUtil.GetSortedIdsByLowerName(registrations.registrations);
         int index = 0;
         foreach(auto id : sortedIds) {
-            if (menus.Contains(id)) {
-                menus.Get(id).carimListIndex = index;
+            if (nametagMenus.Contains(id)) {
+                nametagMenus.Get(id).carimListIndex = index;
                 ++index;
             }
         }

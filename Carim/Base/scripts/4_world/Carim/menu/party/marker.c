@@ -2,9 +2,8 @@
 #define CARIM_CarimMenuPartyMarker
 
 class CarimMenuPartyMarker extends CarimMenuPartyBase {
-    override Widget Init() {
-        layoutRoot = Widget.Cast(GetGame().GetWorkspace().CreateWidgets("Carim/Base/gui/layouts/party/marker.layout"));
-        return super.Init();
+    override string CarimGetLayout() {
+        return "Carim/Base/gui/layouts/party/marker.layout";
     }
 
     vector CarimGetMarkerOffset() {
@@ -13,6 +12,10 @@ class CarimMenuPartyMarker extends CarimMenuPartyBase {
 
     override void CarimUpdate() {
         super.CarimUpdate();
+        CarimSetRootPosition();
+    }
+
+    void CarimSetRootPosition() {
         vector screenPosition = GetGame().GetScreenPos(CarimGetPosition() + CarimGetMarkerOffset());
         float x = Math.Round(screenPosition[0]);
         float y = Math.Round(screenPosition[1]);

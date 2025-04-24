@@ -24,13 +24,17 @@ class CarimMenuPartyBase extends UIScriptedMenu {
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.CarimUpdate);
     }
 
+    string CarimGetLayout() {
+        CarimLogging.Error(this, "CarimGetLayout() not implemented");
+		return "";
+    }
+
     override Widget Init() {
-        if (layoutRoot) {
+        if (!layoutRoot) {
+            layoutRoot = Widget.Cast(GetGame().GetWorkspace().CreateWidgets(CarimGetLayout()));
             carimNametag = TextWidget.Cast(layoutRoot.FindAnyWidget("nametag"));
             carimDistance = TextWidget.Cast(layoutRoot.FindAnyWidget("distance"));
             carimIcon = ImageWidget.Cast(layoutRoot.FindAnyWidget("icon"));
-        } else {
-            CarimLogging.Warn(this, "layoutRoot not set");
         }
 
         return layoutRoot;

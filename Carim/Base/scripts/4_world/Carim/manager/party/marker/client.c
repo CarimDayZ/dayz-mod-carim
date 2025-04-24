@@ -77,7 +77,7 @@ class CarimManagerPartyMarkerClient extends Managed {
             }
         }
         for (int i = menus.Count() - 1; i >= menuIndex; --i) {
-            menus.Get(i).CarimRemove();
+            menus.Get(i).Close();
             menus.Remove(i);
         }
     }
