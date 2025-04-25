@@ -6,7 +6,7 @@ modded class MissionServer {
     ref CarimManagerPartyPositionServer carimManagerPartyPositionServer;
     ref CarimManagerPartyRegistrationServer carimManagerPartyRegistrationServer;
 
-    ref CarimModelServerSettings carimModelServerSettings = new CarimModelServerSettings;
+    ref CarimModelServerSettings carimModelServerSettings;
 
     ref CarimModelPartyParties carimModelPartyParties;
 
@@ -14,6 +14,7 @@ modded class MissionServer {
         carimModelSettings.Load();
         CarimLogging.settings = carimModelSettings;
 
+        carimModelServerSettings = new CarimModelServerSettings;
         carimModelServerSettings.Load();
 
         if (CarimEnabled.Party()) {

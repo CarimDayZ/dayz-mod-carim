@@ -9,9 +9,9 @@ modded class MissionGameplay {
     ref CarimManagerPartyPositionClient carimManagerPartyPositionClient;
     ref CarimManagerPartyRegistrationClient carimManagerPartyRegistrationClient;
 
-    ref CarimModelChatSettings carimModelChatSettings = new CarimModelChatSettings;
-    ref CarimModelPartyMarkers carimModelPartyMarkers = new CarimModelPartyMarkers;
-    ref CarimModelPartyRegistrations carimModelPartyRegistrations = new CarimModelPartyRegistrations;
+    ref CarimModelChatSettings carimModelChatSettings;
+    ref CarimModelPartyMarkers carimModelPartyMarkers;
+    ref CarimModelPartyRegistrations carimModelPartyRegistrations;
 
     void MissionGameplay() {
         carimModelSettings.Load();
@@ -21,6 +21,7 @@ modded class MissionGameplay {
             carimManagerAutorun = new CarimManagerAutorun;
         }
         if (CarimEnabled.Chat()) {
+            carimModelChatSettings = new CarimModelChatSettings;
             carimModelChatSettings.Load();
             carimManagerChat = new CarimManagerChat;
         }
@@ -28,7 +29,9 @@ modded class MissionGameplay {
             carimManagerCompass = new CarimManagerCompass;
         }
         if (CarimEnabled.Party()) {
+            carimModelPartyMarkers = new CarimModelPartyMarkers;
             carimModelPartyMarkers.Load();
+            carimModelPartyRegistrations = new CarimModelPartyRegistrations;
             carimModelPartyRegistrations.Load();
             carimManagerPartyMarkerClient = new CarimManagerPartyMarkerClient(carimModelPartyMarkers, carimModelPartyRegistrations);
             carimManagerPartyPositionClient = new CarimManagerPartyPositionClient(carimModelPartyRegistrations);

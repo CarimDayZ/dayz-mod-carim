@@ -132,6 +132,25 @@ FrameWidgetClass rootFrame {
      mode blend
      "src alpha" 1
     }
+    ImageWidgetClass icon {
+      visible 0
+      ignorepointer 1
+      color 0.749 0.8471 0 1
+      position 0.2 0
+      size 1 1
+      hexactpos 0
+      vexactpos 0
+      hexactsize 0
+      vexactsize 0
+      scaled 1
+      imageTexture "{9D15AA5672F81909}gui/textures/arrow_raw.edds"
+      mode blend
+      "src alpha" 1
+      "stretch mode" stretch_w_h
+      "flip v" 1
+      filter 1
+      rotation 0 0 337
+    }
    }
   }
  }

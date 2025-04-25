@@ -65,6 +65,8 @@ class CarimLogging extends Managed {
         if (!settings) {
             return true;
         }
+        // TODO
+        return true;
         return settings.verbosity >= level;
     }
 }
