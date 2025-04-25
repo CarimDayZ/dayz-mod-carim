@@ -50,6 +50,7 @@ class CarimManagerPartyMarkerClient extends Managed {
         int menuIndex = 0;
         foreach(int index, vector position : markers.markers) {
             string markerName = name + " " + (markers.markers.Count() - index).ToString();
+            CarimLogging.Debug(this, "Adding local marker " + markerName + " " + position.ToString() + " at index " + menuIndex.ToString());
             if (menus.Count() <= menuIndex) {
                 menus.Insert(new CarimMenuPartyMarker(markerName, position));
             } else {
@@ -63,20 +64,23 @@ class CarimManagerPartyMarkerClient extends Managed {
             foreach(vector mark : singleServerMarkers.markers) {
                 if (registrations.registrations.Contains(id)) {
                     markerName = registrations.registrations.Get(id) + " " + (singleServerMarkers.markers.Count() - playerIndex).ToString();
-                } else {
-                    markerName = id.Substring(0, 4) + " " + (playerIndex).ToString();
+
+                    CarimLogging.Debug(this, "Adding server marker " + markerName + " " + mark.ToString() + " at index " + menuIndex.ToString());
+                    if (menus.Count() <= menuIndex) {
+                        auto menu = new CarimMenuPartyMarker(markerName, mark);
+                        menu.Init();
+                        menus.Insert(menu);
+                    } else {
+                        menus.Get(menuIndex).carimName = markerName;
+                        menus.Get(menuIndex).carimPosition = mark;
+                    }
+                    playerIndex++;
+                    menuIndex++;
                 }
-                if (menus.Count() <= menuIndex) {
-                    menus.Insert(new CarimMenuPartyMarker(markerName, mark));
-                } else {
-                    menus.Get(menuIndex).carimName = markerName;
-                    menus.Get(menuIndex).carimPosition = mark;
-                }
-                playerIndex++;
-                menuIndex++;
             }
         }
         for (int i = menus.Count() - 1; i >= menuIndex; --i) {
+            CarimLogging.Debug(this, "Closing marker menu at index " + i.ToString());
             menus.Get(i).Close();
             menus.Remove(i);
         }

@@ -48,6 +48,7 @@ FrameWidgetClass rootFrame {
      "size to text v" 1
      "text valign" center
     }
+   }
   }
   FrameWidgetClass FrameHealth {
    ignorepointer 1

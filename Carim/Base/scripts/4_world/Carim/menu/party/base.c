@@ -19,6 +19,9 @@ class CarimMenuPartyBase extends UIScriptedMenu {
     }
 
     void ~CarimMenuPartyBase() {
+        if (layoutRoot) {
+            layoutRoot.Unlink();
+        }
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.CarimUpdate);
     }
 
