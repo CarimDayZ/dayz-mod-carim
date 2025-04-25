@@ -16,8 +16,6 @@ class CarimMenuPartyBase extends UIScriptedMenu {
         carimName = name;
         carimPosition = position;
         carimPlayer = player;
-
-        GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.CarimUpdate, CARIM_60_FPS_INTERVAL_MS, true);
     }
 
     void ~CarimMenuPartyBase() {
@@ -26,7 +24,7 @@ class CarimMenuPartyBase extends UIScriptedMenu {
 
     string CarimGetLayout() {
         CarimLogging.Error(this, "CarimGetLayout() not implemented");
-		return "";
+        return "";
     }
 
     override Widget Init() {
@@ -35,6 +33,8 @@ class CarimMenuPartyBase extends UIScriptedMenu {
             carimNametag = TextWidget.Cast(layoutRoot.FindAnyWidget("nametag"));
             carimDistance = TextWidget.Cast(layoutRoot.FindAnyWidget("distance"));
             carimIcon = ImageWidget.Cast(layoutRoot.FindAnyWidget("icon"));
+
+            GetGame().GetCallQueue(CALL_CATEGORY_GUI).CallLater(this.CarimUpdate, CARIM_60_FPS_INTERVAL_MS, true);
         }
 
         return layoutRoot;

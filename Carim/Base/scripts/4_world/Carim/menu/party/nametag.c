@@ -55,7 +55,9 @@ class CarimMenuPartyNametag extends CarimMenuPartyMarker {
 
         int currentHealth = CarimGetHealth();
         foreach(int level : CARIM_HEALTH_LEVELS) {
-            carimHealths.Get(level).Show(level == currentHealth);
+            if (carimHealths.Count() > level) {
+                carimHealths.Get(level).Show(level == currentHealth);
+            }
         }
     }
 }

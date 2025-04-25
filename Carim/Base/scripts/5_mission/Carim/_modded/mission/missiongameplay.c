@@ -13,8 +13,9 @@ modded class MissionGameplay {
     ref CarimModelPartyMarkers carimModelPartyMarkers = new CarimModelPartyMarkers;
     ref CarimModelPartyRegistrations carimModelPartyRegistrations = new CarimModelPartyRegistrations;
 
-    override void OnInit() {
-        super.OnInit();
+    void MissionGameplay() {
+        carimModelSettings.Load();
+        CarimLogging.settings = carimModelSettings;
 
         if (CarimEnabled.Autorun()) {
             carimManagerAutorun = new CarimManagerAutorun;

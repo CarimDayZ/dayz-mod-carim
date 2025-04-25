@@ -10,17 +10,18 @@ modded class MissionServer {
 
     ref CarimModelPartyParties carimModelPartyParties;
 
-    override void OnInit() {
-        super.OnInit();
+    void MissionServer() {
+        carimModelSettings.Load();
+        CarimLogging.settings = carimModelSettings;
 
         carimModelServerSettings.Load();
 
         if (CarimEnabled.Party()) {
+            carimModelPartyParties = new CarimModelPartyParties(carimModelServerSettings.adminIds);
+
             carimManagerPartyMarkerServer = new CarimManagerPartyMarkerServer(carimModelPartyParties);
             carimManagerPartyPositionServer = new CarimManagerPartyPositionServer(carimModelPartyParties);
             carimManagerPartyRegistrationServer = new CarimManagerPartyRegistrationServer(carimModelPartyParties);
-
-            carimModelPartyParties = new CarimModelPartyParties(carimModelServerSettings.adminIds);
         }
     }
 

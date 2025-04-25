@@ -63,8 +63,7 @@ class CarimLogging extends Managed {
 
     static bool WillLog(CarimLoggingLevel level) {
         if (!settings) {
-            settings = new CarimModelSettings;
-            settings.Load();
+            return true;
         }
         return settings.verbosity >= level;
     }

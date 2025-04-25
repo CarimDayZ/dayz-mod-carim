@@ -7,7 +7,9 @@ class CarimManagerPartyPositionClientMenus extends Managed {
 
     void CarimManagerPartyPositionClientMenus(string name, vector position) {
         nametag = new CarimMenuPartyNametag(name, position);
+        nametag.Init();
         list = new CarimMenuPartyList(name, position);
+        list.Init();
     }
 
     void SetName(string name) {
