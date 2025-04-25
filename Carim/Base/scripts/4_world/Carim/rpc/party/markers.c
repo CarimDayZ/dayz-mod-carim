@@ -7,13 +7,11 @@ class CarimRPCPartyMarkers extends CarimRPCBase<Param2<string, CarimModelPartyMa
     }
 
     override void HandleServer(PlayerIdentity sender, Param2<string, CarimModelPartyMarkers> params) {
-        // Register markers from client player
-        MissionServer.Cast(GetGame().GetMission()).carimManagerPartyMarkerServer.Register(sender.GetId(), params.param2);
+        MissionBaseWorld.Cast(GetGame().GetMission()).CarimManagerPartyMarkerServerRegister(sender.GetId(), params.param2);
     }
 
     override void HandleClient(PlayerIdentity sender, Param2<string, CarimModelPartyMarkers> params) {
-        // Receive markers from server and show them
-        CarimManagerPartyMarkerClientSingleton.Get().AddServer(params.param1, params.param2);
+        MissionBaseWorld.Cast(GetGame().GetMission()).CarimManagerPartyMarkerClientAddServer(params.param1, params.param2);
     }
 }
 

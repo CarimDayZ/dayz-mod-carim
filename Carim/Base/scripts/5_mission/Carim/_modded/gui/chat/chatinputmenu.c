@@ -19,7 +19,7 @@ modded class ChatInputMenu {
             string text = m_edit_box.GetText();
             if (text != "") {
                 MissionGameplay mission = MissionGameplay.Cast(GetGame().GetMission());
-                if (text.IndexOf("#") != 0 && text.IndexOf("!") != 0 && CarimManagerChatSingleton.Get().isChannelGlobal) {
+                if (text.IndexOf("#") != 0 && text.IndexOf("!") != 0 && MissionGameplay.Cast(GetGame().GetMission()).carimManagerChat.isChannelGlobal) {
                     PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
                     auto params = new Param1<string>(text);
                     carimRPCChat.Send(player, params);

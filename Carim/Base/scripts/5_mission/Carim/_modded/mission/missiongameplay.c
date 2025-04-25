@@ -2,12 +2,12 @@
 #define CARIM_MissionGameplay
 
 modded class MissionGameplay {
-    CarimManagerAutorun carimManagerAutorun;
-    CarimManagerChat carimManagerChat;
-    CarimManagerCompass carimManagerCompass;
-    CarimManagerPartyMarkerClient carimManagerPartyMarkerClient;
-    CarimManagerPartyPositionClient carimManagerPartyPositionClient;
-    CarimManagerPartyRegistrationClient carimManagerPartyRegistrationClient;
+    ref CarimManagerAutorun carimManagerAutorun;
+    ref CarimManagerChat carimManagerChat;
+    ref CarimManagerCompass carimManagerCompass;
+    ref CarimManagerPartyMarkerClient carimManagerPartyMarkerClient;
+    ref CarimManagerPartyPositionClient carimManagerPartyPositionClient;
+    ref CarimManagerPartyRegistrationClient carimManagerPartyRegistrationClient;
 
     ref CarimModelChatSettings carimModelChatSettings = new CarimModelChatSettings;
     ref CarimModelPartyMarkers carimModelPartyMarkers = new CarimModelPartyMarkers;
@@ -35,13 +35,25 @@ modded class MissionGameplay {
         }
     }
 
+    override void CarimManagerPartyMarkerClientAddServer(string id, CarimModelPartyMarkers markers) {
+        carimManagerPartyMarkerClient.AddServer(id, markers);
+    }
+
+    override void CarimManagerPartyPositionClientSetPositions(array<CarimModelPartyPlayer> players) {
+        carimManagerPartyPositionClient.SetPositions(players);
+    }
+
+    override void CarimManagerPartyRegistrationClientSetMutual(array<string> ids) {
+        carimManagerPartyRegistrationClient.SetMutual(ids);
+    }
+
     override void OnUpdate(float timeslice) {
         super.OnUpdate(timeslice);
         if (CarimEnabled.Autorun()) {
             carimManagerAutorun.OnUpdate();
         }
         if (CarimEnabled.Chat()) {
-            carimManagerChat.OnUpdate();
+            carimManagerChat.OnUpdate(carimModelChatSettings);
         }
         if (CarimEnabled.Compass()) {
             carimManagerCompass.OnUpdate();
@@ -58,7 +70,7 @@ modded class MissionGameplay {
         if (CarimEnabled.Party() && !menu) {
             switch (id) {
                 case CarimMenuParty.REGISTER:
-                    menu = new CarimMenuPartyRegister;
+                    menu = new CarimMenuPartyRegister(carimManagerPartyRegistrationClient);
                     carimManagerPartyRegistrationClient.menu = CarimMenuPartyRegister.Cast(menu);
                     break;
             }

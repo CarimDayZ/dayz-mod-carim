@@ -7,8 +7,8 @@ modded class ChatLine {
             m_RootWidget = GetGame().GetWorkspace().CreateWidgets("Carim/Base/gui/layouts/chatline.layout", root_widget);
             m_NameWidget = TextWidget.Cast(m_RootWidget.FindAnyWidget("ChatItemSenderWidget"));
             m_TextWidget = TextWidget.Cast(m_RootWidget.FindAnyWidget("ChatItemTextWidget"));
-            m_NameWidget.SetTextExactSize(CarimModelChatSettingsDAL.Get().size);
-            m_TextWidget.SetTextExactSize(CarimModelChatSettingsDAL.Get().size);
+            m_NameWidget.SetTextExactSize(MissionGameplay.Cast(GetGame().GetMission()).carimModelChatSettings.size);
+            m_TextWidget.SetTextExactSize(MissionGameplay.Cast(GetGame().GetMission()).carimModelChatSettings.size);
         }
     }
 
@@ -18,23 +18,23 @@ modded class ChatLine {
             int channel = params.param1;
             if (channel & CCSystem) {
                 if (params.param2 == "" && params.param3.IndexOf(" : ") > 0) {
-                    CarimSetColour(CarimModelChatSettingsDAL.Get().color_global);
+                    CarimSetColour(MissionGameplay.Cast(GetGame().GetMission()).carimModelChatSettings.color_global);
                 } else {
-                    SetColour(CarimModelChatSettingsDAL.Get().color_alert);
+                    SetColour(MissionGameplay.Cast(GetGame().GetMission()).carimModelChatSettings.color_alert);
                 }
             } else if (channel & CCAdmin) {
-                SetColour(CarimModelChatSettingsDAL.Get().color_server);
+                SetColour(MissionGameplay.Cast(GetGame().GetMission()).carimModelChatSettings.color_server);
             } else if (channel == 0 || channel & CCDirect) {
-                CarimSetColour(CarimModelChatSettingsDAL.Get().color_direct);
+                CarimSetColour(MissionGameplay.Cast(GetGame().GetMission()).carimModelChatSettings.color_direct);
             } else {
-                SetColour(CarimModelChatSettingsDAL.Get().color_server);
+                SetColour(MissionGameplay.Cast(GetGame().GetMission()).carimModelChatSettings.color_server);
             }
         }
     }
 
     void CarimUpdateSize() {
-        m_NameWidget.SetTextExactSize(CarimModelChatSettingsDAL.Get().size);
-        m_TextWidget.SetTextExactSize(CarimModelChatSettingsDAL.Get().size);
+        m_NameWidget.SetTextExactSize(MissionGameplay.Cast(GetGame().GetMission()).carimModelChatSettings.size);
+        m_TextWidget.SetTextExactSize(MissionGameplay.Cast(GetGame().GetMission()).carimModelChatSettings.size);
     }
 
     void CarimSetColour(int colour) {

@@ -3,6 +3,7 @@
 
 class CarimManagerPartyRegistrationClient extends Managed {
     CarimModelPartyRegistrations registrations;
+
     ref CarimMenuPartyRegister menu;
     ref array<string> mutual = new array<string>;
     ref CarimRPCPartyRegister rpc = new CarimRPCPartyRegister;

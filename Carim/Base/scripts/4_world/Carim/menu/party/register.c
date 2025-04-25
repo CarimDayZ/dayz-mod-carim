@@ -2,11 +2,16 @@
 #define CARIM_CarimMenuPartyRegister
 
 class CarimMenuPartyRegister extends UIScriptedMenu {
+    CarimManagerPartyRegistrationClient registrationClient;
     bool carimInitialized;
     TextListboxWidget carimPlayers;
     TextListboxWidget carimRegistered;
     ButtonWidget carimAdd;
     ButtonWidget carimRemove;
+
+    void CarimMenuPartyRegister(CarimManagerPartyRegistrationClient client) {
+        registrationClient = client;
+    }
 
     void ~CarimMenuPartyRegister() {
         GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.CarimUpdateLists);
@@ -50,7 +55,7 @@ class CarimMenuPartyRegister extends UIScriptedMenu {
                     break;
                 }
                 carimPlayers.GetItemData(selectedRow, 0, id);
-                GetGame().GetMission().carimManagerPartyRegistrationClient.AddPlayerToParty(id.param1);
+                registrationClient.AddPlayerToParty(id.param1);
                 CarimUpdateLists();
                 return true;
                 break;
@@ -60,7 +65,7 @@ class CarimMenuPartyRegister extends UIScriptedMenu {
                     break;
                 }
                 carimRegistered.GetItemData(selectedRow, 0, id);
-                CarimManagerPartyRegistrationClientSingleton.Get().RemovePlayerFromParty(id.param1);
+                registrationClient.RemovePlayerFromParty(id.param1);
                 carimRegistered.SelectRow(selectedRow - 1);
                 CarimUpdateLists();
                 return true;
@@ -71,7 +76,7 @@ class CarimMenuPartyRegister extends UIScriptedMenu {
 
     void CarimUpdateLists() {
         CarimUpdateList(carimPlayers, CarimUtil.GetClientPlayerIdentities());
-        CarimUpdateList(carimRegistered, registrations.registrations);
+        CarimUpdateList(carimRegistered, registrationClient.registrations.registrations);
         CarimUpdateColors();
     }
 
@@ -101,12 +106,9 @@ class CarimMenuPartyRegister extends UIScriptedMenu {
         Param1<string> id;
         for (i = 0; i < carimRegistered.GetNumItems(); ++i) {
             carimRegistered.GetItemData(i, 0, id);
-            if (onlinePlayers.Contains(id.param1)) {
+            if (onlinePlayers.Contains(id.param1) && registrationClient.mutual.Find(id.param1) >= 0) {
                 // Green 400
                 carimRegistered.SetItemColor(i, 0, 0xFF66BB6A);
-            } else if (onlinePlayers.Contains(id.param1) && parties.mutual.Find(id.param1) < 0) {
-                // Light Blue 400
-                carimRegistered.SetItemColor(i, 0, 0xFF29B6F6);
             } else {
                 // Gray 400
                 carimRegistered.SetItemColor(i, 0, 0xFFBDBDBD);

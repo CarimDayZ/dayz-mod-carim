@@ -7,7 +7,7 @@ class CarimRPCPartyPositions extends CarimRPCBase<Param1<array<CarimModelPartyPl
     }
 
     override void HandleClient(PlayerIdentity sender, Param1<array<CarimModelPartyPlayer>> params) {
-        CarimManagerPartyPositionClientSingleton.Get().SetPositions(params.param1);
+        MissionBaseWorld.Cast(GetGame().GetMission()).CarimManagerPartyPositionClientSetPositions(params.param1);
     }
 }
 
