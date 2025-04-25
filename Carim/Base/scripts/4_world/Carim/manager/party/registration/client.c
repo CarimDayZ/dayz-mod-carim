@@ -62,13 +62,11 @@ class CarimManagerPartyRegistrationClient extends Managed {
 
     void AddPlayerToParty(string id) {
         registrations.Add(id, CarimUtil.GetClientPlayerIdentities().Get(id));
-        registrations.Persist();
         RenewRegistration();
     }
 
     void RemovePlayerFromParty(string id) {
         registrations.Remove(id);
-        registrations.Persist();
         mutual.RemoveItem(id);
         RenewRegistration();
     }

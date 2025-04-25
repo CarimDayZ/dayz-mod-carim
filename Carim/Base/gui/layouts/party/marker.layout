@@ -23,7 +23,7 @@ FrameWidgetClass rootFrame {
    "shadow size" 5
    "text sharpness" 1.5
    "exact text" 1
-   "exact text size" 14
+   "exact text size" 10
    "size to text h" 1
    "size to text v" 1
    "text halign" center
@@ -45,16 +45,17 @@ FrameWidgetClass rootFrame {
      "shadow size" 5
      "text sharpness" 1.5
      "exact text" 1
-     "exact text size" 14
+     "exact text size" 10
      "size to text h" 1
      "size to text v" 1
      "text halign" center
      "text valign" center
     }
     FrameWidgetClass FrameIcon {
+     visible 1
      ignorepointer 1
-     position 0 -22
-     size 20 20
+     position 0 -18
+     size 16 16
      halign center_ref
      hexactpos 1
      vexactpos 1

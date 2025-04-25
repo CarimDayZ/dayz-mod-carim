@@ -21,6 +21,7 @@ class CarimManagerPartyMarkerClient extends Managed {
     void InitialRegistration() {
         PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
         if (player && player.GetIdentity()) {
+            SyncMenus();
             Send();
             GetGame().GetCallQueue(CALL_CATEGORY_GUI).Remove(this.InitialRegistration);
         }
@@ -32,10 +33,12 @@ class CarimManagerPartyMarkerClient extends Managed {
             if (CarimUtil.CheckInput("UACarimPartyPing")) {
                 vector position = GetRaycastPosition();
                 if (position != vector.Zero) {
+                    CarimLogging.Debug(this, "Input ping");
                     Add(position);
                 }
             }
             if (CarimUtil.CheckInput("UACarimPartyPingClear")) {
+                CarimLogging.Debug(this, "Input clear");
                 Reset();
             }
         }
@@ -52,8 +55,12 @@ class CarimManagerPartyMarkerClient extends Managed {
             string markerName = name + " " + (markers.markers.Count() - index).ToString();
             CarimLogging.Debug(this, "Adding local marker " + markerName + " " + position.ToString() + " at index " + menuIndex.ToString());
             if (menus.Count() <= menuIndex) {
-                menus.Insert(new CarimMenuPartyMarker(markerName, position));
+                auto localMenu = new CarimMenuPartyMarker(markerName, position);
+                localMenu.Init();
+                menus.Insert(localMenu);
+                CarimLogging.Trace(this, "Creating new");
             } else {
+                CarimLogging.Trace(this, "Using existing");
                 menus.Get(menuIndex).carimName = markerName;
                 menus.Get(menuIndex).carimPosition = position;
             }
@@ -67,10 +74,12 @@ class CarimManagerPartyMarkerClient extends Managed {
 
                     CarimLogging.Debug(this, "Adding server marker " + markerName + " " + mark.ToString() + " at index " + menuIndex.ToString());
                     if (menus.Count() <= menuIndex) {
+                        CarimLogging.Trace(this, "Creating new");
                         auto menu = new CarimMenuPartyMarker(markerName, mark);
                         menu.Init();
                         menus.Insert(menu);
                     } else {
+                        CarimLogging.Trace(this, "Using existing");
                         menus.Get(menuIndex).carimName = markerName;
                         menus.Get(menuIndex).carimPosition = mark;
                     }
@@ -79,11 +88,12 @@ class CarimManagerPartyMarkerClient extends Managed {
                 }
             }
         }
+
         for (int i = menus.Count() - 1; i >= menuIndex; --i) {
             CarimLogging.Debug(this, "Closing marker menu at index " + i.ToString());
             menus.Get(i).Close();
-            menus.Remove(i);
         }
+        menus.Resize(menuIndex);
     }
 
     void AddServer(string id, CarimModelPartyMarkers inputMarkers) {
@@ -93,14 +103,12 @@ class CarimManagerPartyMarkerClient extends Managed {
 
     void Add(vector position) {
         markers.Add(position);
-        markers.Persist();
         SyncMenus();
         Send();
     }
 
     void Reset() {
         markers.Clear();
-        markers.Persist();
         SyncMenus();
         Send();
     }

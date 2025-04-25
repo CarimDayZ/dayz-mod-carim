@@ -12,7 +12,7 @@ class CarimMenuPartyList extends CarimMenuPartyNametag {
         float width, height, x, y;
         layoutRoot.GetSize(width, height);
         layoutRoot.GetPos(x, y);
-        y = (5 + height) * carimListIndex;
+        y = (2 + height) * carimListIndex;
         layoutRoot.SetPos(x, y);
     }
 }
