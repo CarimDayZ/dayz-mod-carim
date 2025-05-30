@@ -5,6 +5,7 @@ class CarimEnabled {
     static bool cmap;
     static bool nametag;
     static bool party;
+    static bool earplugs;
 
     static bool initialized;
 
@@ -18,6 +19,10 @@ class CarimEnabled {
 
     static bool Compass() {
         return compass;
+    }
+
+    static bool EarPlugs() {
+        return earplugs;
     }
 
     static bool Map() {
@@ -47,6 +52,7 @@ class CarimEnabled {
             cmap = CfgGameplayHandler.GetCarimMapEnabled();
             nametag = CfgGameplayHandler.GetCarimNametagEnabled();
             party = CfgGameplayHandler.GetCarimPartyEnabled();
+            earplugs = CfgGameplayHandler.GetCarimEarPlugsEnabled();
 
             initialized = true;
         }

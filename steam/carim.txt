@@ -27,6 +27,10 @@ Provides global chat. Switch chat channels with the press of a configurable key 
 [hr][/hr]
 Provides a compass at the top of the display with the press of a configurable key (default: 'H').
 
+[h2]Earplugs[/h2]
+[hr][/hr]
+Provides sound reduction with the press of a configurable key (default: 'N').
+
 [h2]Map[/h2]
 [hr][/hr]
 Provides an in-game map for saving markers and viewing party members. Open with the vanilla configurable key (default: 'M'). Double-click to add a marker, double-right-click to edit and remove.

@@ -63,6 +63,11 @@ modded class CfgGameplayHandler {
         return m_Data.CarimData.CarimCompassData.color;
     }
 
+    // EarPlugs
+    static bool GetCarimEarPlugsEnabled() {
+        return m_Data.CarimData.CarimEarPlugsData.enabled;
+    }
+
     // Map
     static bool GetCarimMapEnabled() {
         return m_Data.CarimData.CarimMapData.enabled;

@@ -4,6 +4,7 @@ modded class MissionGameplay {
     ref CarimManagerAutorun carimManagerAutorun;
     ref CarimManagerChat carimManagerChat;
     ref CarimManagerCompass carimManagerCompass;
+    ref CarimManagerEarPlugs carimManagerEarPlugs;
     ref CarimManagerPartyClient carimManagerPartyClient;
 
     ref CarimModelChatSettings carimModelChatSettings;
@@ -62,6 +63,9 @@ modded class MissionGameplay {
 
             // Manager
             carimManagerPartyClient = new CarimManagerPartyClient(carimModelPartyMarkers, carimModelPartyPings, carimModelPartyPositions, carimModelPartyRegistrations);
+        }
+        if (CarimEnabled.EarPlugs() && !carimManagerEarPlugs) {
+            carimManagerEarPlugs = new CarimManagerEarPlugs;
         }
 
         if (!carimManagerMarker) {
@@ -134,6 +138,10 @@ modded class MissionGameplay {
         }
         if (CarimEnabled.Party() && carimManagerPartyClient) {
             carimManagerPartyClient.OnUpdate(timeslice);
+        }
+
+        if (CarimEnabled.EarPlugs() && carimManagerEarPlugs) {
+            carimManagerEarPlugs.OnUpdate(timeslice);
         }
 
         if (carimManagerMarker) {

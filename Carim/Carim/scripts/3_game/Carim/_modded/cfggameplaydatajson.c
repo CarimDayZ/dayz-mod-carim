@@ -9,6 +9,7 @@ class ITEM_CarimData extends ITEM_DataBase {
     ref ITEM_CarimMapData CarimMapData = new ITEM_CarimMapData;
     ref ITEM_CarimNametagData CarimNametagData = new ITEM_CarimNametagData;
     ref ITEM_CarimPartyData CarimPartyData = new ITEM_CarimPartyData;
+    ref ITEM_CarimEarPlugsData CarimEarPlugsData = new ITEM_CarimEarPlugsData;
 
     bool initialized = false;
     ref array<string> adminIds;
@@ -46,6 +47,10 @@ class ITEM_CarimCompassData extends ITEM_DataBase {
     bool enabled = true;
     bool requireNavItem = false;
     int color = CarimColor.RED_500;
+}
+
+class ITEM_CarimEarPlugsData extends ITEM_DataBase {
+    bool enabled = true;
 }
 
 class ITEM_CarimMapData extends ITEM_DataBase {

@@ -30,6 +30,10 @@ For Battleye BEC, go to Config.cfg in the battleye/Bec folder and change IgnoreC
 
 Provides a compass at the top of the display with the press of a configurable key (default: `H`).
 
+## Earplugs
+
+Provides sound reduction with the press of a configurable key (default: `N`).
+
 ## Map
 
 Provides an in-game map for saving markers and viewing party members. Open with the vanilla configurable key (default: `M`). Double-click to add a marker, double-right-click to edit and remove.
@@ -140,6 +144,9 @@ The color values are signed integers based on the ARGB bytes, so `0xfffafafa` is
         "enabled": true,
         "requireNavItem": false,
         "color": -769226
+    },
+    "CarimEarPlugsData": {
+        "enabled": true
     },
     "CarimMapData": {
         "enabled": true,

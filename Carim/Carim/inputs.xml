@@ -26,6 +26,9 @@
             <input name="UACarimPartyPingClear"
                    loc="Party Ping Clear"
                    />
+            <input name="UACarimEarPlugsToggle"
+                   loc="Earplugs Toggle"
+                   />
         </actions>
         <sorting name="Carim"
                  loc="Carim"
@@ -38,6 +41,7 @@
             <input name="UACarimPartyMenu" />
             <input name="UACarimPartyPing" />
             <input name="UACarimPartyPingClear" />
+            <input name="UACarimEarPlugsToggle" />
         </sorting>
     </inputs>
     <preset>
@@ -64,6 +68,9 @@
         </input>
         <input name="UACarimPartyPingClear">
             <btn name="kY" />
+        </input>
+        <input name="UACarimEarPlugsToggle">
+            <btn name="kN" />
         </input>
     </preset>
 </modded_inputs>
