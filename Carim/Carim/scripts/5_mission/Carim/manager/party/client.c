@@ -71,31 +71,28 @@ class CarimManagerPartyClient extends Managed {
     }
 
     void OnUpdate(float timeslice) {
-        PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-        if (player && GetUApi() && !GetGame().GetUIManager().IsMenuOpen(MENU_CHAT_INPUT)) {
-            if (CarimUtil.CheckInput("UACarimPartyPing")) {
-                vector position = GetRaycastPosition();
-                if (position != vector.Zero) {
-                    CarimLogging.Debug(this, "Input ping");
-                    AddPing(position);
-                }
+        if (CarimUtil.CheckInput("UACarimPartyPing")) {
+            vector position = GetRaycastPosition();
+            if (position != vector.Zero) {
+                CarimLogging.Debug(this, "Input ping");
+                AddPing(position);
             }
-            if (CarimUtil.CheckInput("UACarimPartyPingClear")) {
-                CarimLogging.Debug(this, "Input clear");
-                ResetPings();
+        }
+        if (CarimUtil.CheckInput("UACarimPartyPingClear")) {
+            CarimLogging.Debug(this, "Input clear");
+            ResetPings();
+        }
+        if (CarimUtil.CheckInput("UAUIBack")) {
+            if (menuRegister && GetGame().GetUIManager().GetMenu() == menuRegister) {
+                menuRegister.UnlockControls();
+                menuRegister.Close();
             }
-            if (CarimUtil.CheckInput("UAUIBack")) {
-                if (menuRegister && GetGame().GetUIManager().GetMenu() == menuRegister) {
-                    menuRegister.UnlockControls();
-                    menuRegister.Close();
-                }
-            }
-            if (CarimUtil.CheckInput("UACarimPartyMenu")) {
-                if (menuRegister) {
-                    menuRegister.Close();
-                } else if (!GetGame().GetUIManager().GetMenu()) {
-                    menuRegister = CarimMenuPartyRegister.Cast(GetGame().GetUIManager().EnterScriptedMenu(CarimMenuParty.REGISTER, null));
-                }
+        }
+        if (CarimUtil.CheckInput("UACarimPartyMenu")) {
+            if (menuRegister) {
+                menuRegister.Close();
+            } else if (!GetGame().GetUIManager().GetMenu()) {
+                menuRegister = CarimMenuPartyRegister.Cast(GetGame().GetUIManager().EnterScriptedMenu(CarimMenuParty.REGISTER, null));
             }
         }
         if (menuRegister) {

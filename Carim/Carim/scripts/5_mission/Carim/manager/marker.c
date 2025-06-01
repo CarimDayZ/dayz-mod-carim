@@ -57,17 +57,14 @@ class CarimManagerMarker extends Managed {
 
         bool needsSync = false;
 
-        PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-        if (player && GetUApi() && !GetGame().GetUIManager().IsMenuOpen(MENU_CHAT_INPUT)) {
-            if (CarimUtil.CheckInput("UACarimToggleMarkers")) {
-                // TODO: provide more granular toggling
-                if (toggleState) {
-                    toggleState = CarimMarkerToggles.NONE;
-                } else {
-                    toggleState = CarimMarkerToggles.ALL;
-                }
-                needsSync = true;
+        if (CarimUtil.CheckInput("UACarimToggleMarkers")) {
+            // TODO: provide more granular toggling
+            if (toggleState) {
+                toggleState = CarimMarkerToggles.NONE;
+            } else {
+                toggleState = CarimMarkerToggles.ALL;
             }
+            needsSync = true;
         }
 
         needsSync = needsSync || (pings && pings.changed);

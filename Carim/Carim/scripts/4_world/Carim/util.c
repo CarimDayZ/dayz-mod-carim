@@ -6,9 +6,23 @@ class CarimUtil {
         return string.Format("%1:%2", address, port);
     }
 
-    static bool CheckInput(string inputName) {
+    static bool CheckInput(string inputName, bool withAcceptable = true) {
+        if (withAcceptable) {
+            if (!CheckInputAcceptable()) {
+                return false;
+            }
+        }
+
         UAInput inp = GetUApi().GetInputByName(inputName);
         if (inp && inp.LocalPress()) {
+            return true;
+        }
+        return false;
+    }
+
+    static bool CheckInputAcceptable() {
+        PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
+        if (player && GetUApi() && !GetGame().GetUIManager().IsMenuOpen(MENU_CHAT_INPUT) && !GetGame().GetUIManager().IsMenuOpen(MENU_MAP)) {
             return true;
         }
         return false;
