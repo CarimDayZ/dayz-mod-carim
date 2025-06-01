@@ -26,6 +26,9 @@
             <input name="UACarimPartyPingClear"
                    loc="Party Ping Clear"
                    />
+            <input name="UACarimToggleMarkers"
+                   loc="Toggle Markers"
+                   />
         </actions>
         <sorting name="Carim"
                  loc="Carim"
@@ -38,6 +41,7 @@
             <input name="UACarimPartyMenu" />
             <input name="UACarimPartyPing" />
             <input name="UACarimPartyPingClear" />
+            <input name="UACarimToggleMarkers" />
         </sorting>
     </inputs>
     <preset>
@@ -64,6 +68,9 @@
         </input>
         <input name="UACarimPartyPingClear">
             <btn name="kY" />
+        </input>
+        <input name="UACarimToggleMarkers">
+            <btn name="kK" />
         </input>
     </preset>
 </modded_inputs>
