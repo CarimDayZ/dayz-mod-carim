@@ -25,7 +25,7 @@ class CarimMapMarker extends MapMarker {
     }
 
     override vector GetMarkerPos() {
-        if (carimPlayer) {
+        if (carimPlayer && carimPlayer.IsAlive()) {
             return carimPlayer.GetPosition();
         } else {
             return super.GetMarkerPos();
@@ -75,7 +75,7 @@ class CarimMapMarker extends MapMarker {
     }
 
     int CarimGetHealthLevel() {
-        if (carimPlayer) {
+        if (carimPlayer && carimPlayer.IsAlive()) {
             return carimPlayer.GetHealthLevel();
         } else {
             return carimHealthLevel;

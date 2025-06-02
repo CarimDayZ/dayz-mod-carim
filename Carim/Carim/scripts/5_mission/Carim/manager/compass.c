@@ -7,11 +7,8 @@ class CarimManagerCompass extends Managed {
     }
 
     void OnUpdate(float timeslice) {
-        PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-        if (player && GetUApi() && !GetGame().GetUIManager().IsMenuOpen(MENU_CHAT_INPUT)) {
-            if (CarimUtil.CheckInput("UACarimCompassToggle")) {
-                menu.CarimToggleHeading();
-            }
+        if (CarimUtil.CheckInput("UACarimCompassToggle")) {
+            menu.CarimToggleHeading();
         }
         menu.Update(timeslice);
     }

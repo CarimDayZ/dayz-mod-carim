@@ -15,16 +15,14 @@ class CarimManagerAutorun extends Managed {
 
     void OnUpdate() {
         PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-        if (player && GetUApi() && !GetGame().GetUIManager().IsMenuOpen(MENU_CHAT_INPUT)) {
-            if (ShouldInterrupt(player)) {
-                Stop();
-            } else if (ShouldStart(player)) {
-                Start();
-            } else if (isAutorunning) {
-                int speed = GetUpdatedSpeed(player);
-                if (speed != DayZPlayerConstants.MOVEMENTIDX_IDLE) {
-                    Start(speed);
-                }
+        if (ShouldInterrupt(player)) {
+            Stop();
+        } else if (ShouldStart(player)) {
+            Start();
+        } else if (isAutorunning) {
+            int speed = GetUpdatedSpeed(player);
+            if (speed != DayZPlayerConstants.MOVEMENTIDX_IDLE) {
+                Start(speed);
             }
         }
     }
