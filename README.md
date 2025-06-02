@@ -32,7 +32,7 @@ Provides a compass at the top of the display with the press of a configurable ke
 
 ## Map
 
-Provides an in-game map for saving markers and viewing party members. Open with the vanilla configurable key (default: `M`). Double-click to add a marker, double-right-click to edit and remove.
+Provides an in-game map for saving markers and viewing party members. Open with the vanilla configurable key (default: `M`). Double-click to add a marker, double-right-click to edit and remove. Toggle visibility with a configurable key (default: `K`).
 
 To apply a nicer style than vanilla with additional locations, you can use [the CarimMapStyle mod](https://steamcommunity.com/sharedfiles/filedetails/?id=3483791557).
 
@@ -64,7 +64,7 @@ Servers can configure custom icons and static markers by adding to the `icons` a
 
 ## Nametags
 
-Provides ability to configure zones to display player nametags by specifying a position and radius. Copy the template below and edit as desired. The nametags will only be shown if the players are within the network bubble (~1km).
+Provides ability to configure zones to display player nametags by specifying a position and radius. Copy the template below and edit as desired. The nametags will only be shown if the players are within the network bubble (~1km). Toggle visibility with a configurable key (default: `K`).
 
 ```json
 "CarimNametagData": {
@@ -93,6 +93,8 @@ Allows creation of parties and displaying of nametags of party members. There is
 Parties are managed by the player. Open the menu (default key: `P`), and Add players to your party. If they have also added you, then your nametags will automatically appear. Parties are saved, so you don't have to re-create it each time you login. They also work for whatever server runs the mod.
 
 Tactical pings can be placed (default key: `T`, clear with `Y`) that will be shared with your party.
+
+Toggle visibility of markers and nametags with a configurable key (default: `K`).
 
 Optionally, servers can configure Admin Ids that allow adding party members without them needing to add back.
 
