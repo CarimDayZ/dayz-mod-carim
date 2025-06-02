@@ -40,6 +40,7 @@ FrameWidgetClass rootFrame {
     }
     ImageWidgetClass icon {
      ignorepointer 1
+     color 0 0 0 0
      position 310 48
      size 36 36
      hexactpos 1
@@ -68,7 +69,7 @@ FrameWidgetClass rootFrame {
      hexactsize 1
      vexactsize 1
      style MenuDefault
-     text "Save"
+     text "#menu_apply"
     }
     ButtonWidgetClass deleteButton {
      position 288 128
@@ -78,7 +79,7 @@ FrameWidgetClass rootFrame {
      hexactsize 1
      vexactsize 1
      style MenuDefault
-     text "Delete"
+     text "#menu_remove"
     }
     ButtonWidgetClass cancel {
      position 288 168
@@ -88,7 +89,7 @@ FrameWidgetClass rootFrame {
      hexactsize 1
      vexactsize 1
      style MenuDefault
-     text "Cancel"
+     text "#menu_cancel"
     }
     CheckBoxWidgetClass visible3d {
      position 8 168
