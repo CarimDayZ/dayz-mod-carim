@@ -65,7 +65,9 @@ class CarimUtil {
     static array<PlayerBase> GetClientPlayerBases() {
         array<PlayerBase> players = new array<PlayerBase>;
         foreach(Man m : ClientData.m_PlayerBaseList) {
-            players.Insert(PlayerBase.Cast(m));
+            if (PlayerBase.Cast(m) && PlayerBase.Cast(m).GetIdentity()) {
+                players.Insert(PlayerBase.Cast(m));
+            }
         }
         return players;
     }

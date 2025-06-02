@@ -152,7 +152,7 @@ class CarimManagerMarker extends Managed {
                         includeInNametags = true;
                     }
                 }
-                if (includeInNametags) {
+                if (includeInNametags && player.IsAlive()) {
                     CarimMapMarker newMarker = new CarimMapMarker("0 0 0", player.GetIdentity().GetName(), 0, 0);
                     newMarker.carimPlayerId = CarimUtil.GetIdentifier(player.GetIdentity());
                     newMarker.carimPlayer = player;
