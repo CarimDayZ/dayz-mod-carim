@@ -14,7 +14,7 @@ class CarimModelPartyPings extends CarimModelAbcMarkers {
             countMarkers = markers.Get(mark.carimPlayerId).Count();
         }
         // Remove greater than max markers
-        if (markersLimited && countMarkers >= maxPings) {
+        if (markersLimited && countMarkers >= maxPings && maxPings != 0) {
             markers.Get(mark.carimPlayerId).RemoveOrdered(0);
             --countMarkers;
         }
