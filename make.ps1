@@ -3,8 +3,7 @@ param([switch]$Setup = $false, [switch]$Build = $false, [switch]$Workbench = $fa
 $mod = "Carim"
 $key = "S:\Drive\DayZKeys\schana.biprivatekey"
 $publicKey = "S:\Drive\DayZKeys\schana.bikey"
-$dayZExtract = "C:\Program Files\Wardog\DayZ Extract\DayZExtract.exe"
-$pboProject = "C:\Program Files (x86)\Mikero\DePboTools\bin\pboProject.exe"
+$dayZExtract = "C:\Users\Nathaniel\AppData\Local\DayZExtract\DayZExtract.exe"
 $steamRoot = "S:\SteamLibrary\steamapps\common"
 $expClientDir = "$steamRoot\DayZ Exp"
 $expServerDir = "$steamRoot\DayZ Server Exp"
@@ -12,8 +11,10 @@ $expToolsDir = "$steamRoot\DayZ Experimental Tools"
 $clientDir = "$steamRoot\DayZ"
 $serverDir = "$steamRoot\DayZServer"
 $toolsDir = "$steamRoot\DayZ Tools"
+$addonBuilder = "$toolsDir\Bin\AddonBuilder\AddonBuilder.exe"
 $workshopMods = "$clientDir\!Workshop"
 $projectDrive = "P:"
+$projectDriveSource = "S:\DayZDev"
 
 $root = $(Convert-Path $(git rev-parse --show-toplevel))
 $localMods = "$root\build"
@@ -33,15 +34,14 @@ function Setup-Project {
 
     # Extract game data to project drive
     if ($Exp) {
-        Check-Result -FilePath "$dayZExtract" -ArgumentList "P:", "--experimental", "--unattended"
+        Check-Result -FilePath "$dayZExtract" -ArgumentList "$projectDrive", "--experimental", "--unattended", "--parallel 8"
     }
     else {
-        Check-Result -FilePath "$dayZExtract" -ArgumentList "P:", "--unattended"
+        Check-Result -FilePath "$dayZExtract" -ArgumentList "$projectDrive", "--unattended", "--parallel 16"
     }
 
-    # Create the junction, since pboProject doesn't work with symbolic links
+    # Create the junction
     cmd /c mklink /J "$projectDrive\$mod" "$root\$mod"
-    #New-Item -Path "$projectDrive\$mod" -Value "$sourceRoot\$mod" -ItemType SymbolicLink
     
     $workingServerDir = $serverDir
     $workingClientDir = $clientDir
@@ -86,7 +86,6 @@ function Setup-Project {
     $cfggameplay | ConvertTo-Json -Depth 32 -Compress | Set-Content "$missions\$missionName\cfggameplay.json"
 
     (Get-Content "$missions\$missionName\db\globals.xml").Replace('<var name="TimeLogin" type="0" value="15"/>', '<var name="TimeLogin" type="0" value="1"/>') | Set-Content "$missions\$missionName\db\globals.xml"
-    
 }
 
 function Start-Workbench {
@@ -101,12 +100,42 @@ function Build-Project {
     $outputs = Get-ChildItem "$localMods" | Where-Object { $_.PSISContainer }
 
     foreach ($output in $outputs) {
-        Check-Result -FilePath $pboProject -ArgumentList "$projectDrive\$mod\$output".Replace('@', ''), "+M=$localMods\$output", "+E=DAYZSA", "+K=$key", "+T", "+H", "+$", "+B", "+C", "-P"
+        $inputRoot = "$projectDrive\$mod\$output".Replace('@', '')
+        $outputRoot = "$localMods\$output"
+
+        if ((Test-Path -Path "$outputRoot\addons")) {
+            Remove-Item "$outputRoot\addons\*" -Recurse -Force
+        } else {
+            New-Item -Path "$outputRoot\addons" -ItemType Directory
+        }
+
+        if ((Test-Path -Path "$outputRoot\keys")) {
+            Remove-Item "$outputRoot\keys\*" -Recurse -Force
+        } else {
+            New-Item -Path "$outputRoot\keys" -ItemType Directory
+        }
+
+        Copy-Item -Path "$publicKey" -Destination "$outputRoot\keys\"
+
+        $builderArgs = @(
+            "$inputRoot",
+            "$outputRoot\addons",
+            "-clear",
+            "-sign=$key",
+            "-include=$localMods\include.txt",
+            "-project=$inputRoot",
+            "-prefix=$mod\$output".Replace('@', '')
+        )
+
+        Check-Result -FilePath $addonBuilder -ArgumentList $builderArgs
+
+        Write-Output "Built with args: $($builderArgs -join ' ')"
     }
 }
 
 function Diag-Project {
     $mods = "$localMods\@$mod;$localMods\@${mod}MapStyle"
+    # $mods = "$workshopMods\@$mod;$workshopMods\@${mod}MapStyle"
 
     $workingDir = $clientDir
     if ($Exp) {
@@ -128,10 +157,15 @@ function Run-Server {
 }
 
 function Check-Result {
-    $process = (Start-Process -Wait -PassThru @args)
+    $process = (Start-Process -Wait -PassThru -NoNewWindow @args)
     if ($process.ExitCode) {
         throw "Failed"
     }
+}
+
+# Setup the P drive if it's not already
+if (!(Test-Path -Path "$projectDrive")) {
+    subst "$projectDrive" "$projectDriveSource"
 }
 
 if ($Setup) {
