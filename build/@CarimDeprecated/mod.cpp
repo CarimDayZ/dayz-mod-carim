@@ -1,0 +1,10 @@
+name = "CarimDeprecated";
+picture = "Carim/CarimDeprecated/gui/textures/Carim_small.edds";
+logo = "Carim/CarimDeprecated/gui/textures/Carim_small.edds";
+logoSmall = "Carim/CarimDeprecated/gui/textures/Carim_small.edds";
+logoOver = "Carim/CarimDeprecated/gui/textures/Carim_small.edds";
+tooltip = "CarimDeprecated";
+overview = "Open Source mods for DayZ";
+action = "https://github.com/CarimDayZ/dayz-mod-carim";
+author = "cnofafva";
+authorID = "76561198045960503";

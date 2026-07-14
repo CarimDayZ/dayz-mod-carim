@@ -1,6 +1,6 @@
 class CfgPatches {
     class CarimDeprecated {
-        requiredAddons[] = {"DZ_Scripts"};
+        requiredAddons[] = {"DZ_Scripts", "Carim"};
     };
 };
 
