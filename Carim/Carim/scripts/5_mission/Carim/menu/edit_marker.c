@@ -8,8 +8,13 @@ class CarimMenuEditMarker extends Managed {
     int y;
     bool visible;
     int currentIcon;
+    float panelWidth;
+    float panelHeight;
+    int screenWidth;
+    int screenHeight;
 
     Widget root;
+    Widget panel;
     EditBoxWidget text;
     ImageWidget icon;
 
@@ -46,9 +51,11 @@ class CarimMenuEditMarker extends Managed {
         distance = SliderWidget.Cast(root.FindAnyWidget("distance"));
         distanceLabel = TextWidget.Cast(root.FindAnyWidget("distanceLabel"));
 
-        auto panel = root.FindAnyWidget("panel");
+        panel = root.FindAnyWidget("panel");
+        panel.GetSize(panelWidth, panelHeight);
+        GetScreenSize(screenWidth, screenHeight);
 
-        colorButtons = GetColorButtons(panel);
+        colorButtons = GetColorButtons();
     }
 
     void Show() {
@@ -80,7 +87,17 @@ class CarimMenuEditMarker extends Managed {
             }
             UpdateDistanceLabel();
 
-            root.SetPos(x, y);
+            float adjustedX = x;
+            float adjustedY = y;
+
+            if (x + panelWidth > screenWidth) {
+                adjustedX = x - panelWidth;
+            }
+            if (y + panelHeight > screenHeight) {
+                adjustedY = y - panelHeight;
+            }
+
+            root.SetPos(adjustedX, adjustedY);
             root.Show(visible);
         }
     }
@@ -166,7 +183,7 @@ class CarimMenuEditMarker extends Managed {
         return true;
     }
 
-    static array<ref ButtonWidget> GetColorButtons(Widget panel) {
+    array<ref ButtonWidget> GetColorButtons() {
         // Needs to be 21 for layout to work
         int colors[] = {CarimColor.RED_500,
                         CarimColor.PINK_500,
@@ -192,10 +209,6 @@ class CarimMenuEditMarker extends Managed {
 
         float currentX = 8;
         float currentY = 48;
-
-        float panelWidth;
-        float panelHeight;
-        panel.GetSize(panelWidth, panelHeight);
 
         // Figure out the scaling based on the size defined in the layout
         float scaleX = panelWidth / 376;
