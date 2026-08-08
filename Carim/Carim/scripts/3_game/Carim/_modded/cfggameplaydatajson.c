@@ -44,6 +44,7 @@ class ITEM_CarimChatData extends ITEM_DataBase {
 
 class ITEM_CarimCompassData extends ITEM_DataBase {
     bool enabled = true;
+    bool showOnSpawn = true;
     bool requireNavItem = false;
     int color = CarimColor.RED_500;
 }

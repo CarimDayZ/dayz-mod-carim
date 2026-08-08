@@ -2,7 +2,7 @@ class CarimMenuCompass extends UIScriptedMenu {
     Widget carimFrame;
     ImageWidget carimImage;
     GridSpacerWidget carimSpacer;
-    bool carimIsVisible = true;
+    bool carimIsVisible = CfgGameplayHandler.GetCarimCompassShowOnSpawn();
 
     override Widget Init() {
         if (!layoutRoot) {

@@ -55,6 +55,10 @@ modded class CfgGameplayHandler {
         return m_Data.CarimData.CarimCompassData.enabled;
     }
 
+    static bool GetCarimCompassShowOnSpawn() {
+        return m_Data.CarimData.CarimCompassData.showOnSpawn;
+    }
+
     static bool GetCarimCompassRequireNavItem() {
         return m_Data.CarimData.CarimCompassData.requireNavItem;
     }
