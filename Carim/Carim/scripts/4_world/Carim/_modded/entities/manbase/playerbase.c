@@ -41,4 +41,11 @@ modded class PlayerBase {
                 break;
         }
     }
+
+    override void CloseMapEx(bool cancelled)
+    {
+        super.CloseMapEx(cancelled)
+        m_Hud.ShowHudUI(true);
+		m_Hud.ShowQuickbarUI(true);
+    }
 }
