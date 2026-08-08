@@ -9,6 +9,11 @@ modded class MapHandler {
                 return true;
             }
         }
+
+        if (button == MouseState.MIDDLE) {
+            return true;
+        }
+
         return super.OnMouseButtonDown(w, x, y, button);
     }
 
@@ -80,6 +85,31 @@ modded class MapHandler {
         }
 
         return true;
+    }
+
+    override bool OnMouseButtonUp(Widget w, int x, int y, int button) {
+        switch (button) {
+            case MouseState.MIDDLE:
+                // Quick marker removal
+                vector mousePos, worldPos;
+                mousePos[0] = x;
+                mousePos[1] = y;
+                worldPos = MapWidget.Cast(w).ScreenToMap(mousePos);
+                worldPos[1] = GetGame().SurfaceY(worldPos[0], worldPos[2]);
+
+                CarimLogging.Trace(this, string.Format("OnWheelClickUp %1, mouse(%2) world(%3)", button.ToString(), mousePos, worldPos));
+
+                auto mission = MissionGameplay.Cast(GetGame().GetMission());
+                auto marker = CarimMapMarker.CarimNew(worldPos, "", CfgGameplayHandler.GetCarimMapColorIconDefault(), eMapMarkerTypes.MARKERTYPE_MAP_BORDER_CROSS, CarimUtil.GetIdentifier(GetGame().GetPlayer().GetIdentity()));
+
+                auto existingMarker = mission.carimModelMapMarkers.GetClosest(marker);
+                if (existingMarker) {
+                    CarimLogging.Trace(this, "Delete");
+                    mission.carimModelMapMarkers.Remove(existingMarker);
+                }
+                return true;
+        }
+        return super.OnMouseButtonUp(w, x, y, button);
     }
 
     override bool OnClick(Widget w, int x, int y, int button) {
