@@ -11,6 +11,7 @@ class ITEM_CarimData extends ITEM_DataBase {
     ref ITEM_CarimPartyData CarimPartyData = new ITEM_CarimPartyData;
 
     bool initialized = false;
+    bool debugMode = false;
     ref array<string> adminIds;
     bool useSteamId = false; // TODO
 

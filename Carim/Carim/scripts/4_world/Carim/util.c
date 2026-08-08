@@ -30,8 +30,13 @@ class CarimUtil {
 
     static map<string, string> GetClientPlayerIdentities() {
         map<string, string> identities = new map<string, string>;
+        bool isDebugMode = CfgGameplayHandler.GetCarimDebugMode();
+        PlayerIdentity localIdentity = GetGame().GetPlayer().GetIdentity();
+
         foreach(SyncPlayer player : ClientData.m_PlayerList.m_PlayerList) {
-            identities.Insert(GetIdentifier(player.m_Identity), player.m_Identity.GetName());
+            if (isDebugMode || player.m_Identity != localIdentity) {
+                identities.Insert(GetIdentifier(player.m_Identity), player.m_Identity.GetName());
+            }
         }
         return identities;
     }

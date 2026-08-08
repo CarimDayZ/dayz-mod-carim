@@ -127,6 +127,7 @@ The color values are signed integers based on the ARGB bytes, so `0xfffafafa` is
 
 ```json
 "CarimData": {
+    "debugMode": false,
     "adminIds": [],
     "CarimAutorunData": {
         "enabled": true

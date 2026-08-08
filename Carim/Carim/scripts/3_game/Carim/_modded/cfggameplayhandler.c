@@ -4,6 +4,10 @@ modded class CfgGameplayHandler {
         return m_Data.CarimData.initialized;
     }
 
+    static bool GetCarimDebugMode() {
+        return m_Data.CarimData.debugMode;
+    }
+
     static array<string> GetCarimAdminIds() {
         return m_Data.CarimData.adminIds;
     }
